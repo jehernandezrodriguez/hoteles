@@ -37,14 +37,14 @@
 
           </tbody>
         </table>
+        <h3 v-if="!loading">  Total de habitaciones {{total}}</h3>
       </b-col>
      <b-col sm="4">
         <b-card :title="(model.id ? 'Editar ID#' + model.id : 'Agregar')">
           <form @submit.prevent="saveModel">
-
             <b-form-select  v-model="model.cantidad" class="my-2" >
                <option :value="null" disabled>-- Seleccione --</option>
-               <option  v-for="i in (4,10)"  :key="i" :value="i">{{i}}</option>
+               <option  v-for="i in (4,100)"  :key="i" :value="i">{{i}}</option>
               </b-form-select>
 
 
@@ -115,13 +115,26 @@ export default {
     this.acomodaciones["2"]= [{id:3,nombre:'Triple'},{id:3,nombre:'Cuádruple'}];
     this.acomodaciones["3"]= [{id:1,nombre:'Sencilla'},{id:2,nombre:'Doble'},{id:3,nombre:'Triple'}];
     console.log("acomodaciones ",this.acomodaciones);
+
+    for (var i = 0; i < this.registros.length; i++) {
+        this.total +=  parseInt(this.registros[i].cantidad);
+    }
+      
     this.loading = false
+    
+
     },
     async populateModelToEdit (registro) {
       this.model = Object.assign({}, registro)
-      this.model.riego = 'true';
     },
     async saveModel () {
+      var modelC = (this.model.id) ?  this.model.cantidad : 0;
+
+      var total = (parseInt(this.total)+parseInt(this.model.cantidad)) - modelC;
+      if ( total > this.hotel.numero_habitaciones ) {
+        alert("No puedes gestionar esta operación. El numero maximo de habitaciones es "+this.hotel.numero_habitaciones)
+        return;
+      }
 
       this.model.hotel_id = this.hotel.id
       if (this.model.id) {
