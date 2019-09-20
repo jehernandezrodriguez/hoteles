@@ -13,13 +13,16 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'components' => [
+      'response' => [
+    'format' => yii\web\Response::FORMAT_JSON,
+    'charset' => 'UTF-8',
+  ],
         'request' => [
-          'parsers' => [
-        'application/json' => 'yii\web\JsonParser',
-      ],
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'i4UZIDo3HKRmQrvNwnlKv9QIyfw4HVJV',
 
+              'parsers' => [
+            'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -55,13 +58,19 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-               ['class' => 'yii\rest\UrlRule', 'controller' => 'Hoteles'],
-               ['class' => 'yii\rest\UrlRule', 'controller' => 'ciudades'],
-               ['class' => 'yii\rest\UrlRule', 'controller' => 'HotelHabitacion'],
-               ['class' => 'yii\rest\UrlRule', 'controller' => 'TiposHoteles'],
-               ['class' => 'yii\rest\UrlRule', 'controller' => 'acomodacion'],
 
-               ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
+               ['class' => 'yii\rest\UrlRule', 'controller' => 'hoteles','pluralize' => false,],
+               ['class' => 'yii\rest\UrlRule', 'controller' => 'ciudades','pluralize' => false,],
+               ['class' => 'yii\rest\UrlRule', 'controller' => 'habitaciones','pluralize' => false,'tokens' => [
+
+                        '{id}' => '<id:\\w+>',
+
+                    ],'extraPatterns' => [
+        'GET search' => 'search',
+    ],],
+               ['class' => 'yii\rest\UrlRule', 'controller' => 'tipos','pluralize' => false,],
+               ['class' => 'yii\rest\UrlRule', 'controller' => 'acomodaciones','pluralize' => false,],
+               ['class' => 'yii\rest\UrlRule', 'controller' => 'user','pluralize' => false,],
             ],
         ],
 

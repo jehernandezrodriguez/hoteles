@@ -33,7 +33,7 @@
 
               <li class="nav-item">
                 <router-link class="nav-link" tag="li" to="/site/hotel">
-                 <activity-icon class="custom-class"></activity-icon>
+                 <clipboard-icon class="custom-class"></clipboard-icon>
                   Hoteles
                 </router-link>
 

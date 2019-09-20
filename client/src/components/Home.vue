@@ -9,8 +9,8 @@
   <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
   <p class="lead">
 
-    <router-link tag="li" to="/Dashboard/hoteles">
-  <a class="btn btn-primary btn-lg">Administrar</a>
+    <router-link tag="li" class="btn btn-primary btn-lg" to="/site/hotel">
+  Administrar
 </router-link>
 
   </p>

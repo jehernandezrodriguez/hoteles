@@ -21,6 +21,9 @@ class Acomodacion extends \yii\db\ActiveRecord
     {
         return 'acomodacion';
     }
+    public static function primaryKey(){
+          return ["id"];
+    }
 
     /**
      * {@inheritdoc}

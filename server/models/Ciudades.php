@@ -22,6 +22,10 @@ class Ciudades extends \yii\db\ActiveRecord
         return 'ciudades';
     }
 
+    public static function primaryKey(){
+          return ["id"];
+    }
+
     /**
      * {@inheritdoc}
      */

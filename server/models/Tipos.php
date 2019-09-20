@@ -5,16 +5,15 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "tipo_habitaciones".
+ * 
  *
  * @property int $id
  * @property string $nombre
- * @property int $acomodacion_id
  *
  * @property HotelHabitacion[] $hotelHabitacions
- * @property Acomodacion $acomodacion
+ * @property HotelHabitacion[] $hotelHabitacions0
  */
-class TipoHabitaciones extends \yii\db\ActiveRecord
+class Tipos extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -30,10 +29,8 @@ class TipoHabitaciones extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'acomodacion_id'], 'required'],
-            [['acomodacion_id'], 'integer'],
+            [['nombre'], 'required'],
             [['nombre'], 'string', 'max' => 200],
-            [['acomodacion_id'], 'exist', 'skipOnError' => true, 'targetClass' => Acomodacion::className(), 'targetAttribute' => ['acomodacion_id' => 'id']],
         ];
     }
 
@@ -45,7 +42,6 @@ class TipoHabitaciones extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nombre' => 'Nombre',
-            'acomodacion_id' => 'Acomodacion ID',
         ];
     }
 
@@ -60,8 +56,8 @@ class TipoHabitaciones extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAcomodacion()
+    public function getHotelHabitacions0()
     {
-        return $this->hasOne(Acomodacion::className(), ['id' => 'acomodacion_id']);
+        return $this->hasMany(HotelHabitacion::className(), ['habitacion_id' => 'id']);
     }
 }

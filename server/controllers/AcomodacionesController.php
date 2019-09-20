@@ -8,12 +8,13 @@ use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
+
 /**
  * HotelesController implements the CRUD actions for Hoteles model.
  */
-class CiudadesController extends ActiveController
+class AcomadacionesController extends ActiveController
 {
-     public $modelClass = 'app\models\Ciudades';
+     public $modelClass = 'app\models\Acomodacion';
 
           public static function allowedDomains() {
               return [
@@ -53,4 +54,5 @@ class CiudadesController extends ActiveController
               ];
               return $behaviors;
           }
+
 }

@@ -41,7 +41,7 @@ export default new Router({
           meta: {description: 'Todas los hoteles del sistema'}
         },
         {
-          path: 'config',
+          path: 'config/:id',
           component: AcomodacionView,
           name: 'Configuracion',
           meta: {description: 'Acomodación'}

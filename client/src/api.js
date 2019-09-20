@@ -18,14 +18,20 @@ export default {
     }else
      url = resource;
     console.log(url);
-    if(accessToken){
+    if(accessToken)
+    {
+      let axiosConfig = {
+      headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Access-Control-Allow-Origin": "*",
+          "accept": 'application/json',
+      }
+    };
         return client({
             method,
             url: url,
-            headers: {
-            'Accept': 'application/json',
-        },
-            data
+            data,
+            axiosConfig,
           }).then(req => {return req.data})
     }
     else
@@ -35,11 +41,8 @@ export default {
 
   },
   get (context,filterHotel=false,modelurl) {
-    var filter;
-    if(filterHotel)
-     filter= auth.filter_model + auth.getPerson().modelId;
-     console.log(auth.getPerson().modelId)
-    return this.execute(context,'get', '/'+modelurl,null,filter)
+    console.log(" Petición get ")
+    return this.execute(context,'get', '/'+modelurl,null,filterHotel)
   },
   getById (context,id,modelurl) {
     return this.execute(context,'get', `/${modelurl}/${id}`)
@@ -53,6 +56,7 @@ export default {
   },
   create (context,data,relationModel,modelurl){
     if(relationModel) data.modelId = auth.getPerson().modelId;
+    console.log("datos",data);
     return this.execute(context,'post', '/'+modelurl, data)
   },
   update (context,id, data,modelurl) {

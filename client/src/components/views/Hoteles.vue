@@ -10,7 +10,8 @@
               <th v-if="false">Identificador</th>
               <th>Nit</th>
               <th>Nombre</th>
-              <th>direccion</th>
+              <th>Dirección</th>
+              <th>Cantidad de habitaciones</th>
               <th>&nbsp;</th>
             </tr>
           </thead>
@@ -20,6 +21,10 @@
               <td>{{ registro.nit }}</td>
               <td>{{ registro.nombre }}</td>
               <td>{{ registro.direccion }}</td>
+              <td>{{ registro.numero_habitaciones }}
+
+            <router-link  tag="li" class="btn btn-link" :to="`/site/config/${registro.id}`">Gestionar</router-link>
+              </td>
 
               <td class="text-right">
                 <a href="#" @click.prevent="populateModelToEdit(registro)"><edit-icon class="custom-class"></edit-icon></a>
@@ -34,31 +39,34 @@
         </table>
       </b-col>
      <b-col sm="4">
-        <b-card :title="(model.id ? 'Editar ID#' + model.id : 'Agregar')">
+        <b-card :title="(model.id ? 'Editar ID#' + model.nit : 'Agregar')">
           <form @submit.prevent="saveModel">
-            <b-form-group label="Planta">
 
-              
 
+            <b-form-group >
+                    <b-form-input type="text" placeholder="Nit"  v-model="model.nit"></b-form-input>
             </b-form-group>
-            <b-form-group label="Hora Riego">
-                <b-form-select v-model="model.horaRiego" :options="optionsHour" class="mb-3">
-                  <template slot="first">
-                      <option :value="null" disabled>-- Selecciona una hora --</option>
-                  </template>
+
+            <b-form-group >
+                    <b-form-input type="text" placeholder="Nombre de hotel"  v-model="model.nombre"></b-form-input>
+            </b-form-group>
+
+
+
+            <b-form-group >
+                    <b-form-input type="text" placeholder="Dirección"  v-model="model.direccion"></b-form-input>
+            </b-form-group>
+
+            <b-form-select  v-model="model.ciudad_id" class="my-2" >
+               <option :value="null" disabled>-- Seleccione --</option>
+               <option  v-for="city in citys"  :key="city.id" :value="city.id">{{city.nombre}}</option>
               </b-form-select>
-            </b-form-group>
-            <b-form-group label="">
-                  <b-form-checkbox
-                     v-model="model.riego"
-                     :checked="true"
-                     value= true
-                     unchecked-value= false
-                     >
-                 ¿Regar?
-              </b-form-checkbox>
 
-            </b-form-group>
+              <b-form-group >
+                      <b-form-input type="number" placeholder="Número de habitaciones"  v-model="model.numero_habitaciones"></b-form-input>
+              </b-form-group>
+
+
 
             <div>
               <b-btn type="submit" variant="success">Guardar</b-btn>
@@ -70,9 +78,6 @@
     </b-row>
   </div>
 
-  <b-modal ref="modalMsg" hide-footer title="No puedes usar este componente">
-    No tienes registros creados ....
-  </b-modal>
   </div>
 
 
@@ -87,6 +92,7 @@ export default {
     return {
       loading: false,
       registros: [],
+      citys: [],
       tipo_habitaciones : [],
       model: {},
     }
@@ -99,8 +105,13 @@ export default {
   },
   methods: {
     async refresh () {
-console.log("aa");
 
+      this.loading = true
+      this.model = {} // reset form;
+      this.registros = await api.get(this,false,'hoteles')
+      this.model = {}
+      this.citys = await api.get(this,false,'ciudades')
+      this.loading = false
     },
     async populateModelToEdit (registro) {
       this.model = Object.assign({}, registro)
@@ -109,11 +120,10 @@ console.log("aa");
     async saveModel () {
 
       if (this.model.id) {
-        await api.update(this,this.model.id, this.model,'agendaPlanta')
+        await api.update(this,this.model.id, this.model,'hoteles')
       } else {
-        console.log(this.model);
-
-        await api.create(this,this.model,true,'agendaPlanta')
+        console.log("Modelo a enviar para su creación",this.model);
+        await api.create(this,this.model,false,'hoteles')
       }
       this.model = {} // reset form
       await this.refresh()
@@ -123,7 +133,7 @@ console.log("aa");
         if (this.model.id === id) {
           this.model = {}
         }
-        await api.delete(this,id,'agendaPlanta')
+        await api.delete(this,id,'hoteles')
         await this.refresh()
       }
     }

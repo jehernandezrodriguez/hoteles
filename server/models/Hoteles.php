@@ -27,6 +27,10 @@ class Hoteles extends \yii\db\ActiveRecord
         return 'hoteles';
     }
 
+    public static function primaryKey(){
+          return ["id"];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,6 +38,7 @@ class Hoteles extends \yii\db\ActiveRecord
     {
         return [
             [['nombre', 'direccion', 'nit', 'ciudad_id', 'numero_habitaciones'], 'required'],
+            ['nombre', 'unique'],
             [['ciudad_id', 'numero_habitaciones'], 'integer'],
             [['nombre'], 'string', 'max' => 200],
             [['direccion'], 'string', 'max' => 255],
